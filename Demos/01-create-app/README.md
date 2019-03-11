@@ -1,0 +1,3 @@
+# <a name="completed-module-create-a-nodejs-express-web-app"></a>Módulo concluído: criar um aplicativo Web do node. js Express
+
+A versão do projeto nesse diretório reflete a conclusão do tutorial para cima para [criar um aplicativo Web node. js Express](https://docs.microsoft.com/graph/training/node-tutorial?tutorial-step=1). Se você usar esta versão do projeto, precisará concluir o restante do tutorial começando em [registrar o aplicativo no portal](https://docs.microsoft.com/graph/training/node-tutorial?tutorial-step=2).
