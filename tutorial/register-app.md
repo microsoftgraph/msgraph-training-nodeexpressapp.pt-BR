@@ -1,40 +1,36 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
-<span data-ttu-id="9e8b1-101">Neste exercício, você criará um novo registro de aplicativo Web do Azure AD usando o ARP (portal de registro de aplicativo).</span><span class="sxs-lookup"><span data-stu-id="9e8b1-101">In this exercise, you will create a new Azure AD web application registration using the Application Registry Portal (ARP).</span></span>
+<span data-ttu-id="819f4-101">Neste exercício, você criará um novo registro de aplicativo Web do Azure AD usando o centro de administração do Azure Active Directory.</span><span class="sxs-lookup"><span data-stu-id="819f4-101">In this exercise, you will create a new Azure AD web application registration using the Azure Active Directory admin center.</span></span>
 
-1. <span data-ttu-id="9e8b1-102">Abra um navegador e navegue até o [portal de registro do aplicativo](https://apps.dev.microsoft.com).</span><span class="sxs-lookup"><span data-stu-id="9e8b1-102">Open a browser and navigate to the [Application Registration Portal](https://apps.dev.microsoft.com).</span></span> <span data-ttu-id="9e8b1-103">Faça logon usando uma **conta pessoal** (aka: conta da Microsoft) ou **conta corporativa ou de estudante**.</span><span class="sxs-lookup"><span data-stu-id="9e8b1-103">Login using a **personal account** (aka: Microsoft Account) or **Work or School Account**.</span></span>
+1. <span data-ttu-id="819f4-102">Abra um navegador e navegue até o [centro de administração do Azure Active Directory](https://aad.portal.azure.com).</span><span class="sxs-lookup"><span data-stu-id="819f4-102">Open a browser and navigate to the [Azure Active Directory admin center](https://aad.portal.azure.com).</span></span> <span data-ttu-id="819f4-103">Faça logon usando uma **conta pessoal** (aka: conta da Microsoft) ou **conta corporativa ou de estudante**.</span><span class="sxs-lookup"><span data-stu-id="819f4-103">Login using a **personal account** (aka: Microsoft Account) or **Work or School Account**.</span></span>
 
-1. <span data-ttu-id="9e8b1-104">Selecione **Adicionar um aplicativo** na parte superior da página.</span><span class="sxs-lookup"><span data-stu-id="9e8b1-104">Select **Add an app** at the top of the page.</span></span>
+1. <span data-ttu-id="819f4-104">Selecione **Azure Active Directory** na navegação à esquerda e, em seguida, selecione **registros de aplicativo (visualização)** em **gerenciar**.</span><span class="sxs-lookup"><span data-stu-id="819f4-104">Select **Azure Active Directory** in the left-hand navigation, then select **App registrations (Preview)** under **Manage**.</span></span>
 
-    > [!NOTE]
-    > <span data-ttu-id="9e8b1-105">Se você vir mais de um botão **Adicionar um aplicativo** na página, selecione aquele que corresponde à lista **aplicativos convergidos** .</span><span class="sxs-lookup"><span data-stu-id="9e8b1-105">If you see more than one **Add an app** button on the page, select the one that corresponds to the **Converged apps** list.</span></span>
+    ![<span data-ttu-id="819f4-105">Uma captura de tela dos registros de aplicativo</span><span class="sxs-lookup"><span data-stu-id="819f4-105">A screenshot of the App registrations</span></span> ](./images/aad-portal-app-registrations.png)
 
-1. <span data-ttu-id="9e8b1-106">Na página **registrar seu aplicativo** , configure o **nome do aplicativo** como **tutorial de gráfico node. js** e selecione **criar**.</span><span class="sxs-lookup"><span data-stu-id="9e8b1-106">On the **Register your application** page, set the **Application Name** to **Node.js Graph Tutorial** and select **Create**.</span></span>
+1. <span data-ttu-id="819f4-106">Selecione **novo registro**.</span><span class="sxs-lookup"><span data-stu-id="819f4-106">Select **New registration**.</span></span> <span data-ttu-id="819f4-107">Na página **registrar um aplicativo** , defina os valores da seguinte maneira.</span><span class="sxs-lookup"><span data-stu-id="819f4-107">On the **Register an application** page, set the values as follows.</span></span>
 
-    ![Captura de tela da criação de um novo aplicativo no site do portal de registro de aplicativo](./images/arp-create-app-01.png)
+    - <span data-ttu-id="819f4-108">Defina \*\*\*\* o nome `Node.js Graph Tutorial`como.</span><span class="sxs-lookup"><span data-stu-id="819f4-108">Set **Name** to `Node.js Graph Tutorial`.</span></span>
+    - <span data-ttu-id="819f4-109">Defina os **tipos de conta com suporte** para **contas em qualquer diretório organizacional e contas pessoais da Microsoft**.</span><span class="sxs-lookup"><span data-stu-id="819f4-109">Set **Supported account types** to **Accounts in any organizational directory and personal Microsoft accounts**.</span></span>
+    - <span data-ttu-id="819f4-110">Em **URI**de redirecionamento, defina o primeiro menu `Web` suspenso como e defina o `http://localhost:3000/auth/callback`valor como.</span><span class="sxs-lookup"><span data-stu-id="819f4-110">Under **Redirect URI**, set the first drop-down to `Web` and set the value to `http://localhost:3000/auth/callback`.</span></span>
 
-1. <span data-ttu-id="9e8b1-108">Na página de **registro do tutorial de gráfico do node. js** , na seção **Propriedades** , copie a **ID do aplicativo** , pois você precisará dela mais tarde.</span><span class="sxs-lookup"><span data-stu-id="9e8b1-108">On the **Node.js Graph Tutorial Registration** page, under the **Properties** section, copy the **Application Id** as you will need it later.</span></span>
+    ![Uma captura de tela da página registrar um aplicativo](./images/aad-register-an-app.png)
 
-    ![Captura de tela da ID do aplicativo recém-criado](./images/arp-create-app-02.png)
+1. <span data-ttu-id="819f4-112">Escolha **registrar**.</span><span class="sxs-lookup"><span data-stu-id="819f4-112">Choose **Register**.</span></span> <span data-ttu-id="819f4-113">Na página **tutorial do gráfico node. js** , copie o valor da **ID do aplicativo (cliente)** e salve-o, você precisará dele na próxima etapa.</span><span class="sxs-lookup"><span data-stu-id="819f4-113">On the **Node.js Graph Tutorial** page, copy the value of the **Application (client) ID** and save it, you will need it in the next step.</span></span>
 
-1. <span data-ttu-id="9e8b1-110">Role para baixo até a seção **segredos do aplicativo** .</span><span class="sxs-lookup"><span data-stu-id="9e8b1-110">Scroll down to the **Application Secrets** section.</span></span>
+    ![Uma captura de tela da ID do aplicativo do novo registro de aplicativo](./images/aad-application-id.png)
 
-    1. <span data-ttu-id="9e8b1-111">Selecione **gerar nova senha**.</span><span class="sxs-lookup"><span data-stu-id="9e8b1-111">Select **Generate New Password**.</span></span>
-    1. <span data-ttu-id="9e8b1-112">Na caixa de diálogo **nova senha gerada** , copie o conteúdo da caixa, pois você precisará dela mais tarde.</span><span class="sxs-lookup"><span data-stu-id="9e8b1-112">In the **New password generated** dialog, copy the contents of the box as you will need it later.</span></span>
+1. <span data-ttu-id="819f4-115">Selecione **autenticação** em **gerenciar**.</span><span class="sxs-lookup"><span data-stu-id="819f4-115">Select **Authentication** under **Manage**.</span></span> <span data-ttu-id="819f4-116">Localize a seção **Grant implícita** e habilite os tokens de **ID**.</span><span class="sxs-lookup"><span data-stu-id="819f4-116">Locate the **Implicit grant** section and enable **ID tokens**.</span></span> <span data-ttu-id="819f4-117">Selecione **Salvar**.</span><span class="sxs-lookup"><span data-stu-id="819f4-117">Choose **Save**.</span></span>
 
-        > <span data-ttu-id="9e8b1-113">**Importante:** Essa senha nunca é mostrada novamente, portanto, certifique-se de copiá-la agora.</span><span class="sxs-lookup"><span data-stu-id="9e8b1-113">**Important:** This password is never shown again, so make sure you copy it now.</span></span>
+    ![Uma captura de tela da seção Grant implícita](./images/aad-implicit-grant.png)
 
-    ![Captura de tela da senha do aplicativo recém-criado](./images/arp-create-app-03.png)
+1. <span data-ttu-id="819f4-119">Selecione **certificados & segredos** sob **gerenciar**.</span><span class="sxs-lookup"><span data-stu-id="819f4-119">Select **Certificates & secrets** under **Manage**.</span></span> <span data-ttu-id="819f4-120">Selecione o botão **novo cliente secreto** .</span><span class="sxs-lookup"><span data-stu-id="819f4-120">Select the **New client secret** button.</span></span> <span data-ttu-id="819f4-121">Insira um valor em **Descrição** e selecione uma das opções para **expirar** e escolha **Adicionar**.</span><span class="sxs-lookup"><span data-stu-id="819f4-121">Enter a value in **Description** and select one of the options for **Expires** and choose **Add**.</span></span>
 
-1. <span data-ttu-id="9e8b1-115">Role para baixo até a seção **plataformas** .</span><span class="sxs-lookup"><span data-stu-id="9e8b1-115">Scroll down to the **Platforms** section.</span></span>
+    ![Uma captura de tela da caixa de diálogo Adicionar um segredo do cliente](./images/aad-new-client-secret.png)
 
-    1. <span data-ttu-id="9e8b1-116">Selecione **Adicionar plataforma**.</span><span class="sxs-lookup"><span data-stu-id="9e8b1-116">Select **Add Platform**.</span></span>
-    1. <span data-ttu-id="9e8b1-117">Na caixa de diálogo **Adicionar plataforma** , selecione **Web**.</span><span class="sxs-lookup"><span data-stu-id="9e8b1-117">In the **Add Platform** dialog, select **Web**.</span></span>
+1. <span data-ttu-id="819f4-123">Copie o valor de segredo do cliente antes de sair desta página.</span><span class="sxs-lookup"><span data-stu-id="819f4-123">Copy the client secret value before you leave this page.</span></span> <span data-ttu-id="819f4-124">Você precisará dela na próxima etapa.</span><span class="sxs-lookup"><span data-stu-id="819f4-124">You will need it in the next step.</span></span>
 
-        ![Captura de tela criando uma plataforma para o aplicativo](./images/arp-create-app-04.png)
+    > [!IMPORTANT]
+    > <span data-ttu-id="819f4-125">Esse segredo do cliente nunca é mostrado novamente, portanto, certifique-se de copiá-lo agora.</span><span class="sxs-lookup"><span data-stu-id="819f4-125">This client secret is never shown again, so make sure you copy it now.</span></span>
 
-    1. <span data-ttu-id="9e8b1-119">Na caixa plataforma **da Web** , digite a URL `http://localhost:3000/auth/callback` das **URLs**de redirecionamento.</span><span class="sxs-lookup"><span data-stu-id="9e8b1-119">In the **Web** platform box, enter the URL `http://localhost:3000/auth/callback` for the **Redirect URLs**.</span></span>
-
-        ![Captura de tela da nova plataforma Web adicionada para o aplicativo](./images/arp-create-app-05.png)
-
-1. <span data-ttu-id="9e8b1-121">Role até a parte inferior da página e selecione **salvar**.</span><span class="sxs-lookup"><span data-stu-id="9e8b1-121">Scroll to the bottom of the page and select **Save**.</span></span>
+    ![Uma captura de tela do novo segredo do cliente recentemente adicionado](./images/aad-copy-client-secret.png)
