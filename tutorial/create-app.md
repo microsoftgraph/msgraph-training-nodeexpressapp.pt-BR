@@ -39,9 +39,19 @@ Antes de prosseguir, instale algumas Gems adicionais que serão usadas posterior
 Execute o seguinte comando em sua CLI.
 
 ```Shell
-npm install dotenv@6.1.0 moment@2.22.2 connect-flash@0.1.1 express-session@1.15.6
-npm install passport-azure-ad@4.0.0 simple-oauth2@2.2.1 @microsoft/microsoft-graph-client@1.3.0
+npm install dotenv@6.2.0 moment@2.24.0 connect-flash@0.1.1 express-session@1.15.6
+npm install passport-azure-ad@4.0.0 simple-oauth2@2.2.1 @microsoft/microsoft-graph-client@1.5.2
 ```
+
+>__USUÁRIOS DO WINDOWS__
+>
+>Se você receber a seguinte mensagem de erro ao tentar instalar esses pacotes:
+>
+> `gyp ERR! stack Error: Can't find Python executable "python", you can set the PYTHON env variable.`
+>
+>Execute o seguinte comando para instalar as ferramentas de compilação do Windows usando uma janela de terminal elevado (administrador) que instala as ferramentas de compilação do VS e também o Python
+>
+> `npm install --global --production windows-build-tools`
 
 Agora atualize o aplicativo para usar o `connect-flash` e `express-session` middleware. Abra o `./app.js` arquivo e adicione a seguinte `require` instrução à parte superior do arquivo.
 
