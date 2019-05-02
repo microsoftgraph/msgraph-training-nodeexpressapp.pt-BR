@@ -1,66 +1,66 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
-<span data-ttu-id="75669-101">Neste exercício, você usará o [Express](http://expressjs.com/) para compilar um aplicativo Web.</span><span class="sxs-lookup"><span data-stu-id="75669-101">In this exercise you will use [Express](http://expressjs.com/) to build a web app.</span></span> <span data-ttu-id="75669-102">Se você ainda não tiver o gerador Express instalado, você pode instalá-lo a partir da interface de linha de comando (CLI) com o seguinte comando.</span><span class="sxs-lookup"><span data-stu-id="75669-102">If you don't already have the Express generator installed, you can install it from your command-line interface (CLI) with the following command.</span></span>
+<span data-ttu-id="2bba0-101">Neste exercício, você usará o [Express](http://expressjs.com/) para compilar um aplicativo Web.</span><span class="sxs-lookup"><span data-stu-id="2bba0-101">In this exercise you will use [Express](http://expressjs.com/) to build a web app.</span></span> <span data-ttu-id="2bba0-102">Se você ainda não tiver o gerador Express instalado, você pode instalá-lo a partir da interface de linha de comando (CLI) com o seguinte comando.</span><span class="sxs-lookup"><span data-stu-id="2bba0-102">If you don't already have the Express generator installed, you can install it from your command-line interface (CLI) with the following command.</span></span>
 
 ```Shell
 npm install express-generator -g
 ```
 
-<span data-ttu-id="75669-103">Abra sua CLI, navegue até um diretório onde você tem direitos para criar arquivos e execute o seguinte comando para criar um novo aplicativo expresso que usa o [guias](http://handlebarsjs.com/) como o mecanismo de renderização.</span><span class="sxs-lookup"><span data-stu-id="75669-103">Open your CLI, navigate to a directory where you have rights to create files, and run the following command to create a new Express app that uses [Handlebars](http://handlebarsjs.com/) as the rendering engine.</span></span>
+<span data-ttu-id="2bba0-103">Abra sua CLI, navegue até um diretório onde você tem direitos para criar arquivos e execute o seguinte comando para criar um novo aplicativo expresso que usa o [guias](http://handlebarsjs.com/) como o mecanismo de renderização.</span><span class="sxs-lookup"><span data-stu-id="2bba0-103">Open your CLI, navigate to a directory where you have rights to create files, and run the following command to create a new Express app that uses [Handlebars](http://handlebarsjs.com/) as the rendering engine.</span></span>
 
 ```Shell
 express --hbs graph-tutorial
 ```
 
-<span data-ttu-id="75669-104">O gerador Express cria um novo diretório chamado `graph-tutorial` e estruturará um aplicativo expresso.</span><span class="sxs-lookup"><span data-stu-id="75669-104">The Express generator creates a new directory called `graph-tutorial` and scaffolds an Express app.</span></span> <span data-ttu-id="75669-105">Navegue até este novo diretório e insira o comando a seguir para instalar as dependências.</span><span class="sxs-lookup"><span data-stu-id="75669-105">Navigate to this new directory and enter the following command to install dependencies.</span></span>
+<span data-ttu-id="2bba0-104">O gerador Express cria um novo diretório chamado `graph-tutorial` e estruturará um aplicativo expresso.</span><span class="sxs-lookup"><span data-stu-id="2bba0-104">The Express generator creates a new directory called `graph-tutorial` and scaffolds an Express app.</span></span> <span data-ttu-id="2bba0-105">Navegue até este novo diretório e insira o comando a seguir para instalar as dependências.</span><span class="sxs-lookup"><span data-stu-id="2bba0-105">Navigate to this new directory and enter the following command to install dependencies.</span></span>
 
 ```Shell
 npm install
 ```
 
-<span data-ttu-id="75669-106">Quando o comando for concluído, use o comando a seguir para iniciar um servidor Web local.</span><span class="sxs-lookup"><span data-stu-id="75669-106">Once that command completes, use the following command to start a local web server.</span></span>
+<span data-ttu-id="2bba0-106">Quando o comando for concluído, use o comando a seguir para iniciar um servidor Web local.</span><span class="sxs-lookup"><span data-stu-id="2bba0-106">Once that command completes, use the following command to start a local web server.</span></span>
 
 ```Shell
 npm start
 ```
 
-<span data-ttu-id="75669-107">Abra o navegador e vá até `http://localhost:3000`.</span><span class="sxs-lookup"><span data-stu-id="75669-107">Open your browser and navigate to `http://localhost:3000`.</span></span> <span data-ttu-id="75669-108">Se tudo estiver funcionando, você verá uma mensagem de "bem-vindo ao Express".</span><span class="sxs-lookup"><span data-stu-id="75669-108">If everything is working, you will see a "Welcome to Express" message.</span></span> <span data-ttu-id="75669-109">Se você não vir essa mensagem, confira o [Guia de introdução ao Express](http://expressjs.com/starter/generator.html).</span><span class="sxs-lookup"><span data-stu-id="75669-109">If you don't see that message, check the [Express getting started guide](http://expressjs.com/starter/generator.html).</span></span>
+<span data-ttu-id="2bba0-107">Abra o navegador e vá até `http://localhost:3000`.</span><span class="sxs-lookup"><span data-stu-id="2bba0-107">Open your browser and navigate to `http://localhost:3000`.</span></span> <span data-ttu-id="2bba0-108">Se tudo estiver funcionando, você verá uma mensagem de "bem-vindo ao Express".</span><span class="sxs-lookup"><span data-stu-id="2bba0-108">If everything is working, you will see a "Welcome to Express" message.</span></span> <span data-ttu-id="2bba0-109">Se você não vir essa mensagem, confira o [Guia de introdução ao Express](http://expressjs.com/starter/generator.html).</span><span class="sxs-lookup"><span data-stu-id="2bba0-109">If you don't see that message, check the [Express getting started guide](http://expressjs.com/starter/generator.html).</span></span>
 
-<span data-ttu-id="75669-110">Antes de prosseguir, instale algumas Gems adicionais que serão usadas posteriormente:</span><span class="sxs-lookup"><span data-stu-id="75669-110">Before moving on, install some additional gems that you will use later:</span></span>
+<span data-ttu-id="2bba0-110">Antes de prosseguir, instale algumas Gems adicionais que serão usadas posteriormente:</span><span class="sxs-lookup"><span data-stu-id="2bba0-110">Before moving on, install some additional gems that you will use later:</span></span>
 
-- <span data-ttu-id="75669-111">[dotenv](https://github.com/motdotla/dotenv) para carregar valores de um arquivo. env.</span><span class="sxs-lookup"><span data-stu-id="75669-111">[dotenv](https://github.com/motdotla/dotenv) for loading values from a .env file.</span></span>
-- <span data-ttu-id="75669-112">[](https://github.com/moment/moment/) tempo para formatar valores de data/hora.</span><span class="sxs-lookup"><span data-stu-id="75669-112">[moment](https://github.com/moment/moment/) for formatting date/time values.</span></span>
-- <span data-ttu-id="75669-113">[Connect –](https://github.com/jaredhanson/connect-flash) mensagens de erro do flash para Flash no aplicativo.</span><span class="sxs-lookup"><span data-stu-id="75669-113">[connect-flash](https://github.com/jaredhanson/connect-flash) to flash error messages in the app.</span></span>
-- <span data-ttu-id="75669-114">[Express-Session](https://github.com/expressjs/session) para armazenar valores em uma sessão do lado do servidor na memória.</span><span class="sxs-lookup"><span data-stu-id="75669-114">[express-session](https://github.com/expressjs/session) to store values in an in-memory server-side session.</span></span>
-- <span data-ttu-id="75669-115">[Passport-Azure-ad](https://github.com/AzureAD/passport-azure-ad) para autenticar e obter tokens de acesso.</span><span class="sxs-lookup"><span data-stu-id="75669-115">[passport-azure-ad](https://github.com/AzureAD/passport-azure-ad) for authenticating and getting access tokens.</span></span>
-- <span data-ttu-id="75669-116">[oauth2 simples](https://github.com/lelylan/simple-oauth2) para gerenciamento de token.</span><span class="sxs-lookup"><span data-stu-id="75669-116">[simple-oauth2](https://github.com/lelylan/simple-oauth2) for token management.</span></span>
-- <span data-ttu-id="75669-117">[Microsoft-Graph-Client](https://github.com/microsoftgraph/msgraph-sdk-javascript) para fazer chamadas para o Microsoft Graph.</span><span class="sxs-lookup"><span data-stu-id="75669-117">[microsoft-graph-client](https://github.com/microsoftgraph/msgraph-sdk-javascript) for making calls to Microsoft Graph.</span></span>
+- <span data-ttu-id="2bba0-111">[dotenv](https://github.com/motdotla/dotenv) para carregar valores de um arquivo. env.</span><span class="sxs-lookup"><span data-stu-id="2bba0-111">[dotenv](https://github.com/motdotla/dotenv) for loading values from a .env file.</span></span>
+- <span data-ttu-id="2bba0-112">[](https://github.com/moment/moment/) tempo para formatar valores de data/hora.</span><span class="sxs-lookup"><span data-stu-id="2bba0-112">[moment](https://github.com/moment/moment/) for formatting date/time values.</span></span>
+- <span data-ttu-id="2bba0-113">[Connect –](https://github.com/jaredhanson/connect-flash) mensagens de erro do flash para Flash no aplicativo.</span><span class="sxs-lookup"><span data-stu-id="2bba0-113">[connect-flash](https://github.com/jaredhanson/connect-flash) to flash error messages in the app.</span></span>
+- <span data-ttu-id="2bba0-114">[Express-Session](https://github.com/expressjs/session) para armazenar valores em uma sessão do lado do servidor na memória.</span><span class="sxs-lookup"><span data-stu-id="2bba0-114">[express-session](https://github.com/expressjs/session) to store values in an in-memory server-side session.</span></span>
+- <span data-ttu-id="2bba0-115">[Passport-Azure-ad](https://github.com/AzureAD/passport-azure-ad) para autenticar e obter tokens de acesso.</span><span class="sxs-lookup"><span data-stu-id="2bba0-115">[passport-azure-ad](https://github.com/AzureAD/passport-azure-ad) for authenticating and getting access tokens.</span></span>
+- <span data-ttu-id="2bba0-116">[oauth2 simples](https://github.com/lelylan/simple-oauth2) para gerenciamento de token.</span><span class="sxs-lookup"><span data-stu-id="2bba0-116">[simple-oauth2](https://github.com/lelylan/simple-oauth2) for token management.</span></span>
+- <span data-ttu-id="2bba0-117">[Microsoft-Graph-Client](https://github.com/microsoftgraph/msgraph-sdk-javascript) para fazer chamadas para o Microsoft Graph.</span><span class="sxs-lookup"><span data-stu-id="2bba0-117">[microsoft-graph-client](https://github.com/microsoftgraph/msgraph-sdk-javascript) for making calls to Microsoft Graph.</span></span>
 
-<span data-ttu-id="75669-118">Execute o seguinte comando em sua CLI.</span><span class="sxs-lookup"><span data-stu-id="75669-118">Run the following command in your CLI.</span></span>
+<span data-ttu-id="2bba0-118">Execute o seguinte comando em sua CLI.</span><span class="sxs-lookup"><span data-stu-id="2bba0-118">Run the following command in your CLI.</span></span>
 
 ```Shell
 npm install dotenv@6.2.0 moment@2.24.0 connect-flash@0.1.1 express-session@1.15.6
 npm install passport-azure-ad@4.0.0 simple-oauth2@2.2.1 @microsoft/microsoft-graph-client@1.5.2
 ```
 
->__<span data-ttu-id="75669-119">USUÁRIOS DO WINDOWS</span><span class="sxs-lookup"><span data-stu-id="75669-119">WINDOWS USERS</span></span>__
+><span data-ttu-id="2bba0-119">__USUÁRIOS DO WINDOWS__</span><span class="sxs-lookup"><span data-stu-id="2bba0-119">__WINDOWS USERS__</span></span>
 >
-><span data-ttu-id="75669-120">Se você receber a seguinte mensagem de erro ao tentar instalar esses pacotes:</span><span class="sxs-lookup"><span data-stu-id="75669-120">If you get the following error message when trying to install these packages:</span></span>
+><span data-ttu-id="2bba0-120">Se você receber a seguinte mensagem de erro ao tentar instalar esses pacotes:</span><span class="sxs-lookup"><span data-stu-id="2bba0-120">If you get the following error message when trying to install these packages:</span></span>
 >
 > `gyp ERR! stack Error: Can't find Python executable "python", you can set the PYTHON env variable.`
 >
-><span data-ttu-id="75669-121">Execute o seguinte comando para instalar as ferramentas de compilação do Windows usando uma janela de terminal elevado (administrador) que instala as ferramentas de compilação do VS e também o Python</span><span class="sxs-lookup"><span data-stu-id="75669-121">Run the following command to install the Windows Build Tools using an elevated (Administrator) terminal window which installs the VS Build Tools and also Python</span></span>
+><span data-ttu-id="2bba0-121">Execute o seguinte comando para instalar as ferramentas de compilação do Windows usando uma janela de terminal elevado (administrador) que instala as ferramentas de compilação do VS e também o Python</span><span class="sxs-lookup"><span data-stu-id="2bba0-121">Run the following command to install the Windows Build Tools using an elevated (Administrator) terminal window which installs the VS Build Tools and also Python</span></span>
 >
 > `npm install --global --production windows-build-tools`
 
-<span data-ttu-id="75669-122">Agora atualize o aplicativo para usar o `connect-flash` e `express-session` middleware.</span><span class="sxs-lookup"><span data-stu-id="75669-122">Now update the application to use the `connect-flash` and `express-session` middleware.</span></span> <span data-ttu-id="75669-123">Abra o `./app.js` arquivo e adicione a seguinte `require` instrução à parte superior do arquivo.</span><span class="sxs-lookup"><span data-stu-id="75669-123">Open the `./app.js` file and add the following `require` statement to the top of the file.</span></span>
+<span data-ttu-id="2bba0-122">Agora atualize o aplicativo para usar o `connect-flash` e `express-session` middleware.</span><span class="sxs-lookup"><span data-stu-id="2bba0-122">Now update the application to use the `connect-flash` and `express-session` middleware.</span></span> <span data-ttu-id="2bba0-123">Abra o `./app.js` arquivo e adicione a seguinte `require` instrução à parte superior do arquivo.</span><span class="sxs-lookup"><span data-stu-id="2bba0-123">Open the `./app.js` file and add the following `require` statement to the top of the file.</span></span>
 
 ```js
 var session = require('express-session');
 var flash = require('connect-flash');
 ```
 
-<span data-ttu-id="75669-124">Adicione o seguinte código imediatamente após a `var app = express();` linha.</span><span class="sxs-lookup"><span data-stu-id="75669-124">Add the following code immediately after the `var app = express();` line.</span></span>
+<span data-ttu-id="2bba0-124">Adicione o seguinte código imediatamente após a `var app = express();` linha.</span><span class="sxs-lookup"><span data-stu-id="2bba0-124">Add the following code immediately after the `var app = express();` line.</span></span>
 
 ```js
 // Session middleware
@@ -93,9 +93,9 @@ app.use(function(req, res, next) {
 });
 ```
 
-## <a name="design-the-app"></a><span data-ttu-id="75669-125">Projetar o aplicativo</span><span class="sxs-lookup"><span data-stu-id="75669-125">Design the app</span></span>
+## <a name="design-the-app"></a><span data-ttu-id="2bba0-125">Projetar o aplicativo</span><span class="sxs-lookup"><span data-stu-id="2bba0-125">Design the app</span></span>
 
-<span data-ttu-id="75669-126">Comece criando o layout global para o aplicativo.</span><span class="sxs-lookup"><span data-stu-id="75669-126">Start by creating the global layout for the app.</span></span> <span data-ttu-id="75669-127">Abra o `./views/layout.hbs` arquivo e substitua todo o conteúdo pelo código a seguir.</span><span class="sxs-lookup"><span data-stu-id="75669-127">Open the `./views/layout.hbs` file and replace the entire contents with the following code.</span></span>
+<span data-ttu-id="2bba0-126">Comece criando o layout global para o aplicativo.</span><span class="sxs-lookup"><span data-stu-id="2bba0-126">Start by creating the global layout for the app.</span></span> <span data-ttu-id="2bba0-127">Abra o `./views/layout.hbs` arquivo e substitua todo o conteúdo pelo código a seguir.</span><span class="sxs-lookup"><span data-stu-id="2bba0-127">Open the `./views/layout.hbs` file and replace the entire contents with the following code.</span></span>
 
 ```html
 <!DOCTYPE html>
@@ -182,9 +182,9 @@ app.use(function(req, res, next) {
 </html>
 ```
 
-<span data-ttu-id="75669-128">Este código adiciona a [inicialização](http://getbootstrap.com/) para estilos simples e a [fonte incrível](https://fontawesome.com/) para alguns ícones simples.</span><span class="sxs-lookup"><span data-stu-id="75669-128">This code adds [Bootstrap](http://getbootstrap.com/) for simple styling, and [Font Awesome](https://fontawesome.com/) for some simple icons.</span></span> <span data-ttu-id="75669-129">Também define um layout global com uma barra de navegação.</span><span class="sxs-lookup"><span data-stu-id="75669-129">It also defines a global layout with a nav bar.</span></span>
+<span data-ttu-id="2bba0-128">Este código adiciona a [inicialização](http://getbootstrap.com/) para estilos simples e a [fonte incrível](https://fontawesome.com/) para alguns ícones simples.</span><span class="sxs-lookup"><span data-stu-id="2bba0-128">This code adds [Bootstrap](http://getbootstrap.com/) for simple styling, and [Font Awesome](https://fontawesome.com/) for some simple icons.</span></span> <span data-ttu-id="2bba0-129">Também define um layout global com uma barra de navegação.</span><span class="sxs-lookup"><span data-stu-id="2bba0-129">It also defines a global layout with a nav bar.</span></span>
 
-<span data-ttu-id="75669-130">Agora, `./public/stylesheets/style.css` abra e substitua todo o conteúdo pelo seguinte.</span><span class="sxs-lookup"><span data-stu-id="75669-130">Now open `./public/stylesheets/style.css` and replace its entire contents with the following.</span></span>
+<span data-ttu-id="2bba0-130">Agora, `./public/stylesheets/style.css` abra e substitua todo o conteúdo pelo seguinte.</span><span class="sxs-lookup"><span data-stu-id="2bba0-130">Now open `./public/stylesheets/style.css` and replace its entire contents with the following.</span></span>
 
 ```css
 body {
@@ -198,7 +198,7 @@ body {
 }
 ```
 
-<span data-ttu-id="75669-131">Agora, atualize a página padrão.</span><span class="sxs-lookup"><span data-stu-id="75669-131">Now update the default page.</span></span> <span data-ttu-id="75669-132">Abra o `./views/index.hbs` arquivo e substitua seu conteúdo pelo seguinte.</span><span class="sxs-lookup"><span data-stu-id="75669-132">Open the `./views/index.hbs` file and replace its contents with the following.</span></span>
+<span data-ttu-id="2bba0-131">Agora, atualize a página padrão.</span><span class="sxs-lookup"><span data-stu-id="2bba0-131">Now update the default page.</span></span> <span data-ttu-id="2bba0-132">Abra o `./views/index.hbs` arquivo e substitua seu conteúdo pelo seguinte.</span><span class="sxs-lookup"><span data-stu-id="2bba0-132">Open the `./views/index.hbs` file and replace its contents with the following.</span></span>
 
 ```html
 <div class="jumbotron">
@@ -213,7 +213,7 @@ body {
 </div>
 ```
 
-<span data-ttu-id="75669-133">Abra o `./routes/index.js` arquivo e substitua o código existente pelo seguinte.</span><span class="sxs-lookup"><span data-stu-id="75669-133">Open the `./routes/index.js` file and replace the existing code with the following.</span></span>
+<span data-ttu-id="2bba0-133">Abra o `./routes/index.js` arquivo e substitua o código existente pelo seguinte.</span><span class="sxs-lookup"><span data-stu-id="2bba0-133">Open the `./routes/index.js` file and replace the existing code with the following.</span></span>
 
 ```js
 var express = require('express');
@@ -231,6 +231,6 @@ router.get('/', function(req, res, next) {
 module.exports = router;
 ```
 
-<span data-ttu-id="75669-134">Salve todas as suas alterações e reinicie o servidor.</span><span class="sxs-lookup"><span data-stu-id="75669-134">Save all of your changes and restart the server.</span></span> <span data-ttu-id="75669-135">Agora, o aplicativo deve ser muito diferente.</span><span class="sxs-lookup"><span data-stu-id="75669-135">Now, the app should look very different.</span></span>
+<span data-ttu-id="2bba0-134">Salve todas as suas alterações e reinicie o servidor.</span><span class="sxs-lookup"><span data-stu-id="2bba0-134">Save all of your changes and restart the server.</span></span> <span data-ttu-id="2bba0-135">Agora, o aplicativo deve ser muito diferente.</span><span class="sxs-lookup"><span data-stu-id="2bba0-135">Now, the app should look very different.</span></span>
 
 ![Uma captura de tela da página inicial reprojetada](./images/create-app-01.png)
