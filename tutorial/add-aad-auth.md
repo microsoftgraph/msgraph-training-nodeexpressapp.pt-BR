@@ -253,7 +253,7 @@ app.use(function(req, res, next) {
 
 Agora que você pode obter tokens, é hora de implementar uma maneira de armazená-los no aplicativo. No momento, o aplicativo está armazenando o token de acesso bruto no armazenamento do usuário na memória. Como este é um aplicativo de exemplo, por questões de simplicidade, você continuará a armazená-los. Um aplicativo real usaria uma solução de armazenamento segura mais confiável, como um banco de dados.
 
-No enTanto, armazenar apenas o token de acesso não permite que você verifique a validade ou atualize o token. Para habilitar isso, atualize o exemplo para encapsular os tokens em um `AccessToken` objeto da `simple-oauth2` biblioteca.
+No entanto, armazenar apenas o token de acesso não permite que você verifique a validade ou atualize o token. Para habilitar isso, atualize o exemplo para encapsular os tokens em um `AccessToken` objeto da `simple-oauth2` biblioteca.
 
 Primeiro, em `./app.js`, adicione o código a **** seguir antes `signInComplete` da função.
 
@@ -319,7 +319,7 @@ router.post('/callback',
 );
 ```
 
-ReInicie o servidor e vá pelo processo de entrada. Você deve terminar de volta na Home Page, mas a interface do usuário deve ser alterada para indicar que você está conectado.
+Reinicie o servidor e vá pelo processo de entrada. Você deve terminar de volta na Home Page, mas a interface do usuário deve ser alterada para indicar que você está conectado.
 
 ![Uma captura de tela da Home Page após entrar](./images/add-aad-auth-01.png)
 
@@ -331,7 +331,7 @@ Clique no avatar do usuário no canto superior direito para acessar o **** link 
 
 Nesse ponto, seu aplicativo tem um token de acesso, que é enviado no `Authorization` cabeçalho das chamadas de API. Este é o token que permite que o aplicativo acesse o Microsoft Graph em nome do usuário.
 
-No enTanto, esse token é de vida curta. O token expira uma hora após sua emissão. É onde o token de atualização se torna útil. O token de atualização permite que o aplicativo solicite um novo token de acesso sem exigir que o usuário entre novamente.
+No entanto, esse token é de vida curta. O token expira uma hora após sua emissão. É onde o token de atualização se torna útil. O token de atualização permite que o aplicativo solicite um novo token de acesso sem exigir que o usuário entre novamente.
 
 Para gerenciar isso, crie um novo arquivo na raiz do projeto chamado `tokens.js` para manter as funções de gerenciamento de token. Adicione o código a seguir.
 
