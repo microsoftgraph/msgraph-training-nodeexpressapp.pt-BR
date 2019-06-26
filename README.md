@@ -22,6 +22,10 @@ Se você só quiser que o exemplo completo seja gerado seguindo este laboratóri
 
 - [Projeto concluído](Demos/03-add-msgraph)
 
+## <a name="watch-the-module"></a>Assista ao módulo
+
+Este módulo foi gravado e está disponível no Office Development YouTube Channel: [compilar aplicativos do node. js Express com o Microsoft Graph](https://youtu.be/n6q8Cm-pTYY)
+
 ## <a name="contributors"></a>Colaboradores
 
 |           Funções            |                                           Autor (es)                                           |
@@ -33,13 +37,14 @@ Se você só quiser que o exemplo completo seja gerado seguindo este laboratóri
 
 ## <a name="version-history"></a>Histórico de versão
 
-| Versão |       Data       |              Comments              |
-| ------- | ---------------- | ---------------------------------- |
-| 1.4     | 24 de maio de 2019     | atualização de conteúdo do 2019Q4             |
-| 1.3     | 17 de maio de 2019     | Etapas atualizadas de registro do aplicativo AAD |
-| 1.2     | 10 de março de 2019   | atualização de conteúdo do 2019Q3             |
-| 1.1     | 8 de fevereiro de 2019 | Slides adicionados                       |
-| 1.0     | 2018             | Published                          |
+| Versão |       Data       |                     Comments                     |
+| ------- | ---------------- | ------------------------------------------------ |
+| 1,5     | 18 de junho de 2019    | Leiame atualizado para a gravação de screencast atualizada |
+| 1.4     | 24 de maio de 2019     | atualização de conteúdo do 2019Q4                           |
+| 1.3     | 17 de maio de 2019     | Etapas atualizadas de registro do aplicativo AAD               |
+| 1.2     | 10 de março de 2019   | atualização de conteúdo do 2019Q3                           |
+| 1.1     | 8 de fevereiro de 2019 | Slides adicionados                                     |
+| 1.0     | 2018             | Published                                        |
 
 ## <a name="disclaimer"></a>Aviso de isenção de responsabilidade
 
