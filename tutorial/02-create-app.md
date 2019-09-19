@@ -29,7 +29,7 @@ Abra o navegador e vá até `http://localhost:3000`. Se tudo estiver funcionando
 Antes de prosseguir, instale algumas Gems adicionais que serão usadas posteriormente:
 
 - [dotenv](https://github.com/motdotla/dotenv) para carregar valores de um arquivo. env.
-- [](https://github.com/moment/moment/) tempo para formatar valores de data/hora.
+- [tempo para formatar](https://github.com/moment/moment/) valores de data/hora.
 - [Connect –](https://github.com/jaredhanson/connect-flash) mensagens de erro do flash para Flash no aplicativo.
 - [Express-Session](https://github.com/expressjs/session) para armazenar valores em uma sessão do lado do servidor na memória.
 - [Passport-Azure-ad](https://github.com/AzureAD/passport-azure-ad) para autenticar e obter tokens de acesso.
@@ -39,8 +39,8 @@ Antes de prosseguir, instale algumas Gems adicionais que serão usadas posterior
 Execute o seguinte comando em sua CLI.
 
 ```Shell
-npm install dotenv@8.0.0 moment@2.24.0 connect-flash@0.1.1 express-session@1.16.1
-npm install passport-azure-ad@4.0.0 simple-oauth2@2.2.1 @microsoft/microsoft-graph-client@1.6.0
+npm install dotenv@8.1.0 moment@2.24.0 connect-flash@0.1.1 express-session@1.16.2
+npm install passport-azure-ad@4.1.0 simple-oauth2@2.4.0 @microsoft/microsoft-graph-client@1.7.0
 ```
 
 > [!TIP]

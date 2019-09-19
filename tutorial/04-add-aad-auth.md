@@ -201,7 +201,7 @@ function getAuthenticatedClient(accessToken) {
 
 Isso exporta a `getUserDetails` função, que usa o SDK do Microsoft Graph para chamar `/me` o ponto de extremidade e retornar o resultado.
 
-Atualize o `signInComplete` método no `/app.s` para chamar essa função. Primeiro, adicione as seguintes `require` instruções à parte superior do arquivo.
+Atualize o `signInComplete` método no `/app.js` para chamar essa função. Primeiro, adicione as seguintes `require` instruções à parte superior do arquivo.
 
 ```js
 var graph = require('./graph');
@@ -323,7 +323,7 @@ Reinicie o servidor e vá pelo processo de entrada. Você deve terminar de volta
 
 ![Uma captura de tela da Home Page após entrar](./images/add-aad-auth-01.png)
 
-Clique no avatar do usuário no canto superior direito para acessar o **** link sair. Clicar **** em sair redefine a sessão e retorna à Home Page.
+Clique no avatar do usuário no canto superior direito para **acessar o link sair.** Clicar **em sair** redefine a sessão e retorna à Home Page.
 
 ![Uma captura de tela do menu suspenso com o link sair](./images/add-aad-auth-02.png)
 
