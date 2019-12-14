@@ -35,12 +35,13 @@ Antes de prosseguir, instale algumas Gems adicionais que serão usadas posterior
 - [Passport-Azure-ad](https://github.com/AzureAD/passport-azure-ad) para autenticar e obter tokens de acesso.
 - [oauth2 simples](https://github.com/lelylan/simple-oauth2) para gerenciamento de token.
 - [Microsoft-Graph-Client](https://github.com/microsoftgraph/msgraph-sdk-javascript) para fazer chamadas para o Microsoft Graph.
+- [isomorphic-FETCH](https://github.com/matthew-andrews/isomorphic-fetch) to metafill o nó de busca. Um polipreenchimento de busca é necessário para `microsoft-graph-client` a biblioteca. Consulte o [Microsoft Graph JavaScript Client library wiki](https://github.com/microsoftgraph/msgraph-sdk-javascript/wiki/Migration-from-1.x.x-to-2.x.x#polyfill-only-when-required) para obter mais informações.
 
 Execute o seguinte comando em sua CLI.
 
 ```Shell
-npm install dotenv@8.1.0 moment@2.24.0 connect-flash@0.1.1 express-session@1.16.2
-npm install passport-azure-ad@4.1.0 simple-oauth2@2.4.0 @microsoft/microsoft-graph-client@1.7.0
+npm install dotenv@8.2.0 moment@2.24.0 connect-flash@0.1.1 express-session@1.17.0 isomorphic-fetch@2.2.1
+npm install passport-azure-ad@4.2.0 simple-oauth2@3.1.0 @microsoft/microsoft-graph-client@2.0.0
 ```
 
 > [!TIP]
