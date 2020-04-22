@@ -4,170 +4,97 @@ Neste exercício, você incorporará o Microsoft Graph no aplicativo. Para este 
 
 ## <a name="get-calendar-events-from-outlook"></a>Obter eventos de calendário do Outlook
 
-Comece adicionando um novo método ao `./graph.js` arquivo para obter os eventos do calendário. Adicione a seguinte função dentro do `module.exports` no `./graph.js`.
+1. Abra `./graph.js` e adicione a seguinte função dentro `module.exports`do.
 
-```js
-getEvents: async function(accessToken) {
-  const client = getAuthenticatedClient(accessToken);
+    :::code language="javascript" source="../demo/graph-tutorial/graph.js" id="GetEventsSnippet":::
 
-  const events = await client
-    .api('/me/events')
-    .select('subject,organizer,start,end')
-    .orderby('createdDateTime DESC')
-    .get();
+    Considere o que esse código está fazendo.
 
-  return events;
-}
-```
+    - A URL que será chamada é `/me/events`.
+    - O `select` método limita os campos retornados para cada evento para apenas aqueles que o modo de exibição realmente usará.
+    - O `orderby` método classifica os resultados pela data e hora em que foram criados, com o item mais recente em primeiro lugar.
 
-Considere o que esse código está fazendo.
+1. Crie um novo arquivo no `./routes` diretório chamado `calendar.js`e adicione o código a seguir.
 
-- A URL que será chamada é `/me/events`.
-- O `select` método limita os campos retornados para cada evento para apenas aqueles que o modo de exibição realmente usará.
-- O `orderby` método classifica os resultados pela data e hora em que foram criados, com o item mais recente em primeiro lugar.
+    ```javascript
+    var express = require('express');
+    var router = express.Router();
+    var tokens = require('../tokens.js');
+    var graph = require('../graph.js');
 
-Crie um novo arquivo no `./routes` diretório chamado `calendar.js`e adicione o código a seguir.
+    /* GET /calendar */
+    router.get('/',
+      async function(req, res) {
+        if (!req.isAuthenticated()) {
+          // Redirect unauthenticated requests to home page
+          res.redirect('/')
+        } else {
+          let params = {
+            active: { calendar: true }
+          };
 
-```js
-var express = require('express');
-var router = express.Router();
-var tokens = require('../tokens.js');
-var graph = require('../graph.js');
+          // Get the access token
+          var accessToken;
+          try {
+            accessToken = await tokens.getAccessToken(req);
+          } catch (err) {
+            res.json(err);
+          }
 
-/* GET /calendar */
-router.get('/',
-  async function(req, res) {
-    if (!req.isAuthenticated()) {
-      // Redirect unauthenticated requests to home page
-      res.redirect('/')
-    } else {
-      let params = {
-        active: { calendar: true }
-      };
+          if (accessToken && accessToken.length > 0) {
+            try {
+              // Get the events
+              var events = await graph.getEvents(accessToken);
 
-      // Get the access token
-      var accessToken;
-      try {
-        accessToken = await tokens.getAccessToken(req);
-      } catch (err) {
-        res.json(err);
-      }
-
-      if (accessToken && accessToken.length > 0) {
-        try {
-          // Get the events
-          var events = await graph.getEvents(accessToken);
-
-          res.json(events.value);
-        } catch (err) {
-          res.json(err);
+              res.json(events.value);
+            } catch (err) {
+              res.json(err);
+            }
+          }
+          else {
+            req.flash('error_msg', 'Could not get an access token');
+          }
         }
       }
-    }
-  }
-);
+    );
 
-module.exports = router;
-```
+    module.exports = router;
+    ```
 
-Atualize `./app.js` para usar essa nova rota. Adicione a seguinte linha **antes** da `var app = express();` linha.
+1. Atualize `./app.js` para usar essa nova rota. Adicione a seguinte linha **antes** da `var app = express();` linha.
 
-```js
-var calendarRouter = require('./routes/calendar');
-```
+    ```javascript
+    var calendarRouter = require('./routes/calendar');
+    ```
 
-Em seguida, adicione a **** linha a `app.use('/auth', authRouter);` seguir após a linha.
+1. Adicione a seguinte linha **após** a `app.use('/auth', authRouter);` linha.
 
-```js
-app.use('/calendar', calendarRouter);
-```
+    ```javascript
+    app.use('/calendar', calendarRouter);
+    ```
 
-Agora você pode testar isso. Entre e clique no link **calendário** na barra de navegação. Se tudo funcionar, você deverá ver um despejo JSON de eventos no calendário do usuário.
+1. Reiniciar o servidor. Entre e clique no link **calendário** na barra de navegação. Se tudo funcionar, você deverá ver um despejo JSON de eventos no calendário do usuário.
 
 ## <a name="display-the-results"></a>Exibir os resultados
 
-Agora você pode adicionar um modo de exibição para exibir os resultados de forma mais amigável. Primeiro, adicione o código a seguir `./app.js` em **após** a `app.set('view engine', 'hbs');` linha.
+Agora você pode adicionar um modo de exibição para exibir os resultados de forma mais amigável.
 
-```js
-var hbs = require('hbs');
-var moment = require('moment');
-// Helper to format date/time sent by Graph
-hbs.registerHelper('eventDateTime', function(dateTime){
-  return moment(dateTime).format('M/D/YY h:mm A');
-});
-```
+1. Adicione o código a seguir `./app.js` em **após** a `app.set('view engine', 'hbs');` linha.
 
-Isso implementa um [auxiliar guias](http://handlebarsjs.com/#helpers) para formatar a data ISO 8601 retornada pelo Microsoft Graph em algo mais amigável.
+    :::code language="javascript" source="../demo/graph-tutorial/app.js" id="FormatDateSnippet":::
 
-Crie um novo arquivo no `./views` diretório chamado `calendar.hbs` e adicione o código a seguir.
+    Isso implementa um [auxiliar guias](http://handlebarsjs.com/#helpers) para formatar a data ISO 8601 retornada pelo Microsoft Graph em algo mais amigável.
 
-```html
-<h1>Calendar</h1>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Organizer</th>
-      <th scope="col">Subject</th>
-      <th scope="col">Start</th>
-      <th scope="col">End</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each events}}
-      <tr>
-        <td>{{this.organizer.emailAddress.name}}</td>
-        <td>{{this.subject}}</td>
-        <td>{{eventDateTime this.start.dateTime}}</td>
-        <td>{{eventDateTime this.end.dateTime}}</td>
-      </tr>
-    {{/each}}
-  </tbody>
-</table>
-```
+1. Crie um novo arquivo no `./views` diretório chamado `calendar.hbs` e adicione o código a seguir.
 
-Isso executará um loop através de uma coleção de eventos e adicionará uma linha de tabela para cada um. Agora atualize a rota `./routes/calendar.js` para usar este modo de exibição. Substitua a rota existente pelo código a seguir.
+    :::code language="html" source="../demo/graph-tutorial/views/calendar.hbs" id="LayoutSnippet":::
 
-```js
-router.get('/',
-  async function(req, res) {
-    if (!req.isAuthenticated()) {
-      // Redirect unauthenticated requests to home page
-      res.redirect('/')
-    } else {
-      let params = {
-        active: { calendar: true }
-      };
+    Isso executará um loop através de uma coleção de eventos e adicionará uma linha de tabela para cada um.
 
-      // Get the access token
-      var accessToken;
-      try {
-        accessToken = await tokens.getAccessToken(req);
-      } catch (err) {
-        req.flash('error_msg', {
-          message: 'Could not get access token. Try signing out and signing in again.',
-          debug: JSON.stringify(err)
-        });
-      }
+1. Agora atualize a rota `./routes/calendar.js` para usar este modo de exibição. Substitua a rota existente pelo código a seguir.
 
-      if (accessToken && accessToken.length > 0) {
-        try {
-          // Get the events
-          var events = await graph.getEvents(accessToken);
-          params.events = events.value;
-        } catch (err) {
-          req.flash('error_msg', {
-            message: 'Could not fetch events',
-            debug: JSON.stringify(err)
-          });
-        }
-      }
+    :::code language="javascript" source="../demo/graph-tutorial/routes/calendar.js" id="GetRouteSnippet" highlight="16-19,26,28-31,37":::
 
-      res.render('calendar', params);
-    }
-  }
-);
-```
+1. Salve suas alterações, reinicie o servidor e entre no aplicativo. Clique no link do **calendário** e o aplicativo agora deve renderizar uma tabela de eventos.
 
-Salve suas alterações, reinicie o servidor e entre no aplicativo. Clique no link do **calendário** e o aplicativo agora deve renderizar uma tabela de eventos.
-
-![Uma captura de tela da tabela de eventos](./images/add-msgraph-01.png)
+    ![Uma captura de tela da tabela de eventos](./images/add-msgraph-01.png)

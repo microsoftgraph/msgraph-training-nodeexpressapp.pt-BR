@@ -2,251 +2,233 @@
 
 Neste exercício, você estenderá o aplicativo do exercício anterior para oferecer suporte à autenticação com o Azure AD. Isso é necessário para obter o token de acesso OAuth necessário para chamar o Microsoft Graph. Nesta etapa, você integrará a biblioteca do [Passport-Azure-ad](https://github.com/AzureAD/passport-azure-ad) ao aplicativo.
 
-Crie um novo arquivo chamado `.env` arquivo na raiz do seu aplicativo e adicione o código a seguir.
+1. Crie um novo arquivo chamado `.env` arquivo na raiz do seu aplicativo e adicione o código a seguir.
 
-```text
-OAUTH_APP_ID=YOUR_APP_ID_HERE
-OAUTH_APP_PASSWORD=YOUR_APP_PASSWORD_HERE
-OAUTH_REDIRECT_URI=http://localhost:3000/auth/callback
-OAUTH_SCOPES='profile offline_access user.read calendars.read'
-OAUTH_AUTHORITY=https://login.microsoftonline.com/common/
-OAUTH_ID_METADATA=v2.0/.well-known/openid-configuration
-OAUTH_AUTHORIZE_ENDPOINT=oauth2/v2.0/authorize
-OAUTH_TOKEN_ENDPOINT=oauth2/v2.0/token
-```
+    :::code language="ini" source="../demo/graph-tutorial/.env.example":::
 
-Substitua `YOUR APP ID HERE` pela ID do aplicativo do portal de registro do aplicativo e substitua `YOUR APP SECRET HERE` pela senha gerada.
+    Substitua `YOUR APP ID HERE` pela ID do aplicativo do portal de registro do aplicativo e substitua `YOUR APP SECRET HERE` pela senha gerada.
 
-> [!IMPORTANT]
-> Se você estiver usando o controle de origem como o Git, agora seria uma boa hora para excluir `.env` o arquivo do controle de origem para evitar vazar inadvertidamente sua ID de aplicativo e sua senha.
+    > [!IMPORTANT]
+    > Se você estiver usando o controle de origem como o Git, agora seria uma boa hora para excluir `.env` o arquivo do controle de origem para evitar vazar inadvertidamente sua ID de aplicativo e sua senha.
 
-Abra `./app.js` e adicione a seguinte linha na parte superior do arquivo para carregar o `.env` arquivo.
+1. Abra `./app.js` e adicione a seguinte linha na parte superior do arquivo para carregar o `.env` arquivo.
 
-```js
-require('dotenv').config();
-```
+    ```javascript
+    require('dotenv').config();
+    ```
 
 ## <a name="implement-sign-in"></a>Implementar logon
 
-Localize a linha `var indexRouter = require('./routes/index');` no `./app.js`. Insira o código a seguir **antes** dessa linha.
+1. Localize a linha `var indexRouter = require('./routes/index');` no `./app.js`. Insira o código a seguir **antes** dessa linha.
 
-```js
-var passport = require('passport');
-var OIDCStrategy = require('passport-azure-ad').OIDCStrategy;
+    ```javascript
+    var passport = require('passport');
+    var OIDCStrategy = require('passport-azure-ad').OIDCStrategy;
 
-// Configure passport
+    // Configure passport
 
-// In-memory storage of logged-in users
-// For demo purposes only, production apps should store
-// this in a reliable storage
-var users = {};
+    // In-memory storage of logged-in users
+    // For demo purposes only, production apps should store
+    // this in a reliable storage
+    var users = {};
 
-// Passport calls serializeUser and deserializeUser to
-// manage users
-passport.serializeUser(function(user, done) {
-  // Use the OID property of the user as a key
-  users[user.profile.oid] = user;
-  done (null, user.profile.oid);
-});
-
-passport.deserializeUser(function(id, done) {
-  done(null, users[id]);
-});
-
-// Callback function called once the sign-in is complete
-// and an access token has been obtained
-async function signInComplete(iss, sub, profile, accessToken, refreshToken, params, done) {
-  if (!profile.oid) {
-    return done(new Error("No OID found in user profile."), null);
-  }
-
-  // Save the profile and tokens in user storage
-  users[profile.oid] = { profile, accessToken };
-  return done(null, users[profile.oid]);
-}
-
-// Configure OIDC strategy
-passport.use(new OIDCStrategy(
-  {
-    identityMetadata: `${process.env.OAUTH_AUTHORITY}${process.env.OAUTH_ID_METADATA}`,
-    clientID: process.env.OAUTH_APP_ID,
-    responseType: 'code id_token',
-    responseMode: 'form_post',
-    redirectUrl: process.env.OAUTH_REDIRECT_URI,
-    allowHttpForRedirectUrl: true,
-    clientSecret: process.env.OAUTH_APP_PASSWORD,
-    validateIssuer: false,
-    passReqToCallback: false,
-    scope: process.env.OAUTH_SCOPES.split(' ')
-  },
-  signInComplete
-));
-```
-
-Este código inicializa a biblioteca [Passport. js](http://www.passportjs.org/) para usar a `passport-azure-ad` biblioteca e a configura com a ID do aplicativo e a senha do aplicativo.
-
-Agora passe o `passport` objeto para o aplicativo expresso. Localize a linha `app.use('/', indexRouter);` no `./app.js`. Insira o código a seguir **antes** dessa linha.
-
-```js
-// Initialize passport
-app.use(passport.initialize());
-app.use(passport.session());
-```
-
-Crie um novo arquivo no `./routes` diretório chamado `auth.js` e adicione o código a seguir.
-
-```js
-var express = require('express');
-var passport = require('passport');
-var router = express.Router();
-
-/* GET auth callback. */
-router.get('/signin',
-  function  (req, res, next) {
-    passport.authenticate('azuread-openidconnect',
-      {
-        response: res,
-        prompt: 'login',
-        failureRedirect: '/',
-        failureFlash: true,
-        successRedirect: '/'
-      }
-    )(req,res,next);
-  }
-);
-
-router.post('/callback',
-  function(req, res, next) {
-    passport.authenticate('azuread-openidconnect',
-      {
-        response: res,
-        failureRedirect: '/',
-        failureFlash: true
-      }
-    )(req,res,next);
-  },
-  function(req, res) {
-    // TEMPORARY!
-    // Flash the access token for testing purposes
-    req.flash('error_msg', {message: 'Access token', debug: req.user.accessToken});
-    res.redirect('/');
-  }
-);
-
-router.get('/signout',
-  function(req, res) {
-    req.session.destroy(function(err) {
-      req.logout();
-      res.redirect('/');
+    // Passport calls serializeUser and deserializeUser to
+    // manage users
+    passport.serializeUser(function(user, done) {
+      // Use the OID property of the user as a key
+      users[user.profile.oid] = user;
+      done (null, user.profile.oid);
     });
-  }
-);
 
-module.exports = router;
-```
+    passport.deserializeUser(function(id, done) {
+      done(null, users[id]);
+    });
 
-Isso define um roteador com três rotas: `signin`, `callback`e `signout`.
+    // Callback function called once the sign-in is complete
+    // and an access token has been obtained
+    async function signInComplete(iss, sub, profile, accessToken, refreshToken, params, done) {
+      if (!profile.oid) {
+        return done(new Error("No OID found in user profile."));
+      }
 
-A `signin` rota chama o `passport.authenticate` método, fazendo com que o aplicativo Redirecione para a página de logon do Azure.
+      // Save the profile and tokens in user storage
+      users[profile.oid] = { profile, accessToken };
+      return done(null, users[profile.oid]);
+    }
 
-A `callback` rota é onde o Azure é redirecionado após a conclusão da entrada. O código chama o `passport.authenticate` método novamente, fazendo com `passport-azure-ad` que a estratégia solicite um token de acesso. Após o token ser obtido, o próximo manipulador é chamado, que redireciona de volta para a Home Page com o token de acesso no valor de erro temporário. Usaremos isso para verificar se a entrada está funcionando antes de prosseguir. Antes de `./routes/auth.js`testarmos, precisamos configurar o aplicativo expresso para usar o novo roteador.
+    // Configure OIDC strategy
+    passport.use(new OIDCStrategy(
+      {
+        identityMetadata: `${process.env.OAUTH_AUTHORITY}${process.env.OAUTH_ID_METADATA}`,
+        clientID: process.env.OAUTH_APP_ID,
+        responseType: 'code id_token',
+        responseMode: 'form_post',
+        redirectUrl: process.env.OAUTH_REDIRECT_URI,
+        allowHttpForRedirectUrl: true,
+        clientSecret: process.env.OAUTH_APP_PASSWORD,
+        validateIssuer: false,
+        passReqToCallback: false,
+        scope: process.env.OAUTH_SCOPES.split(' ')
+      },
+      signInComplete
+    ));
+    ```
 
-O `signout` método registra o usuário e destrói a sessão.
+    Este código inicializa a biblioteca [Passport. js](http://www.passportjs.org/) para usar a `passport-azure-ad` biblioteca e a configura com a ID do aplicativo e a senha do aplicativo.
 
-Insira o código a **** seguir antes `var app = express();` da linha.
+1. Localize a linha `app.use('/', indexRouter);` no `./app.js`. Insira o código a seguir **antes** dessa linha.
 
-```js
-var authRouter = require('./routes/auth');
-```
+    ```javascript
+    // Initialize passport
+    app.use(passport.initialize());
+    app.use(passport.session());
+    ```
 
-Em seguida, insira o **** código a `app.use('/', indexRouter);` seguir após a linha.
+1. Crie um novo arquivo no `./routes` diretório chamado `auth.js` e adicione o código a seguir.
 
-```js
-app.use('/auth', authRouter);
-```
+    ```javascript
+    var express = require('express');
+    var passport = require('passport');
+    var router = express.Router();
+
+    /* GET auth callback. */
+    router.get('/signin',
+      function  (req, res, next) {
+        passport.authenticate('azuread-openidconnect',
+          {
+            response: res,
+            prompt: 'login',
+            failureRedirect: '/',
+            failureFlash: true,
+            successRedirect: '/'
+          }
+        )(req,res,next);
+      }
+    );
+
+    router.post('/callback',
+      function(req, res, next) {
+        passport.authenticate('azuread-openidconnect',
+          {
+            response: res,
+            failureRedirect: '/',
+            failureFlash: true
+          }
+        )(req,res,next);
+      },
+      function(req, res) {
+        // TEMPORARY!
+        // Flash the access token for testing purposes
+        req.flash('error_msg', {message: 'Access token', debug: req.user.accessToken});
+        res.redirect('/');
+      }
+    );
+
+    router.get('/signout',
+      function(req, res) {
+        req.session.destroy(function(err) {
+          req.logout();
+          res.redirect('/');
+        });
+      }
+    );
+
+    module.exports = router;
+    ```
+
+    Isso define um roteador com três rotas: `signin`, `callback`e `signout`.
+
+    A `signin` rota chama o `passport.authenticate` método, fazendo com que o aplicativo Redirecione para a página de logon do Azure.
+
+    A `callback` rota é onde o Azure é redirecionado após a conclusão da entrada. O código chama o `passport.authenticate` método novamente, fazendo com `passport-azure-ad` que a estratégia solicite um token de acesso. Após o token ser obtido, o próximo manipulador é chamado, que redireciona de volta para a Home Page com o token de acesso no valor de erro temporário. Usaremos isso para verificar se a entrada está funcionando antes de prosseguir. Antes de `./routes/auth.js`testarmos, precisamos configurar o aplicativo expresso para usar o novo roteador.
+
+    O `signout` método registra o usuário e destrói a sessão.
+
+1. Abra `./app.js` e insira o código a **before** seguir antes `var app = express();` da linha.
+
+    ```javascript
+    var authRouter = require('./routes/auth');
+    ```
+
+1. Insira o código a **after** seguir após `app.use('/', indexRouter);` a linha.
+
+    ```javascript
+    app.use('/auth', authRouter);
+    ```
 
 Inicie o servidor e navegue até `https://localhost:3000`. Clique no botão entrar e você deverá ser redirecionado para `https://login.microsoftonline.com`o. Faça logon com sua conta da Microsoft e concorde com as permissões solicitadas. O navegador redireciona para o aplicativo, mostrando o token.
 
 ### <a name="get-user-details"></a>Obter detalhes do usuário
 
-Comece criando um novo arquivo para conter todas as chamadas do Microsoft Graph. Crie um novo arquivo na raiz do projeto chamado `graph.js` e adicione o código a seguir.
+1. Crie um novo arquivo na raiz do projeto chamado `graph.js` e adicione o código a seguir.
 
-```js
-var graph = require('@microsoft/microsoft-graph-client');
-require('isomorphic-fetch');
+    ```javascript
+    var graph = require('@microsoft/microsoft-graph-client');
+    require('isomorphic-fetch');
 
-module.exports = {
-  getUserDetails: async function(accessToken) {
-    const client = getAuthenticatedClient(accessToken);
+    module.exports = {
+      getUserDetails: async function(accessToken) {
+        const client = getAuthenticatedClient(accessToken);
 
-    const user = await client.api('/me').get();
-    return user;
-  }
-};
+        const user = await client.api('/me').get();
+        return user;
+      }
+    };
 
-function getAuthenticatedClient(accessToken) {
-  // Initialize Graph client
-  const client = graph.Client.init({
-    // Use the provided access token to authenticate
-    // requests
-    authProvider: (done) => {
-      done(null, accessToken);
+    function getAuthenticatedClient(accessToken) {
+      // Initialize Graph client
+      const client = graph.Client.init({
+        // Use the provided access token to authenticate
+        // requests
+        authProvider: (done) => {
+          done(null, accessToken);
+        }
+      });
+
+      return client;
     }
-  });
+    ```
 
-  return client;
-}
-```
+    Isso exporta a `getUserDetails` função, que usa o SDK do Microsoft Graph para chamar `/me` o ponto de extremidade e retornar o resultado.
 
-Isso exporta a `getUserDetails` função, que usa o SDK do Microsoft Graph para chamar `/me` o ponto de extremidade e retornar o resultado.
+1. Abra `/app.js` e adicione as seguintes `require` instruções à parte superior do arquivo.
 
-Atualize o `signInComplete` método no `/app.js` para chamar essa função. Primeiro, adicione as seguintes `require` instruções à parte superior do arquivo.
+    ```javascript
+    var graph = require('./graph');
+    ```
 
-```js
-var graph = require('./graph');
-```
+1. Substitua a função `signInComplete` existente pelo código seguinte.
 
-Substitua a função `signInComplete` existente pelo código seguinte.
+    ```javascript
+    async function signInComplete(iss, sub, profile, accessToken, refreshToken, params, done) {
+      if (!profile.oid) {
+        return done(new Error("No OID found in user profile."));
+      }
 
-```js
-async function signInComplete(iss, sub, profile, accessToken, refreshToken, params, done) {
-  if (!profile.oid) {
-    return done(new Error("No OID found in user profile."), null);
-  }
+      try{
+        const user = await graph.getUserDetails(accessToken);
 
-  try{
-    const user = await graph.getUserDetails(accessToken);
+        if (user) {
+          // Add properties to profile
+          profile['email'] = user.mail ? user.mail : user.userPrincipalName;
+        }
+      } catch (err) {
+        return done(err);
+      }
 
-    if (user) {
-      // Add properties to profile
-      profile['email'] = user.mail ? user.mail : user.userPrincipalName;
+      // Save the profile and tokens in user storage
+      users[profile.oid] = { profile, accessToken };
+      return done(null, users[profile.oid]);
     }
-  } catch (err) {
-    done(err, null);
-  }
+    ```
 
-  // Save the profile and tokens in user storage
-  users[profile.oid] = { profile, accessToken };
-  return done(null, users[profile.oid]);
-}
-```
+    O novo código atualiza o `profile` fornecido pelo Passport para adicionar uma `email` Propriedade, usando os dados retornados pelo Microsoft Graph.
 
-O novo código atualiza o `profile` fornecido pelo Passport para adicionar uma `email` Propriedade, usando os dados retornados pelo Microsoft Graph.
+1. Adicione o seguinte **após** a `app.use(passport.session());` linha.
 
-Por fim, adicione o `./app.js` código para carregar o perfil de usuário `locals` na propriedade da resposta. Isso o tornará disponível para todos os modos de exibição no aplicativo.
+    :::code language="javascript" source="../demo/graph-tutorial/app.js" id="AddProfileSnippet":::
 
-Adicione o seguinte **após** a `app.use(passport.session());` linha.
-
-```js
-app.use(function(req, res, next) {
-  // Set the authenticated user in the
-  // template locals
-  if (req.user) {
-    res.locals.user = req.user.profile;
-  }
-  next();
-});
-```
+    Este código carrega o perfil do usuário na `locals` propriedade da resposta. Isso o tornará disponível para todos os modos de exibição no aplicativo.
 
 ## <a name="storing-the-tokens"></a>Armazenar tokens
 
@@ -254,75 +236,25 @@ Agora que você pode obter tokens, é hora de implementar uma maneira de armazen
 
 No entanto, armazenar apenas o token de acesso não permite que você verifique a validade ou atualize o token. Para habilitar isso, atualize o exemplo para encapsular os tokens em um `AccessToken` objeto da `simple-oauth2` biblioteca.
 
-Primeiro, em `./app.js`, adicione o código a **** seguir antes `signInComplete` da função.
+1. Abra `./app.js` e adicione o código a **before** seguir antes `signInComplete` da função.
 
-```js
-// Configure simple-oauth2
-const oauth2 = require('simple-oauth2').create({
-  client: {
-    id: process.env.OAUTH_APP_ID,
-    secret: process.env.OAUTH_APP_PASSWORD
-  },
-  auth: {
-    tokenHost: process.env.OAUTH_AUTHORITY,
-    authorizePath: process.env.OAUTH_AUTHORIZE_ENDPOINT,
-    tokenPath: process.env.OAUTH_TOKEN_ENDPOINT
-  }
-});
-```
+    :::code language="javascript" source="../demo/graph-tutorial/app.js" id="ConfigureOAuth2Snippet":::
 
-Em seguida, atualize `signInComplete` a função para criar `AccessToken` um dos tokens brutos passados e armazene-os no armazenamento do usuário. Substitua a função `signInComplete` existente pelo seguinte.
+1. Substitua a função `signInComplete` existente pelo seguinte.
 
-```js
-async function signInComplete(iss, sub, profile, accessToken, refreshToken, params, done) {
-  if (!profile.oid) {
-    return done(new Error("No OID found in user profile."), null);
-  }
+    :::code language="javascript" source="../demo/graph-tutorial/app.js" id="SignInCompleteSnippet" highlight="17-18, 21":::
 
-  try{
-    const user = await graph.getUserDetails(accessToken);
+1. Substitua a rota de retorno de `./routes/auth.js` chamada existente em com o seguinte.
 
-    if (user) {
-      // Add properties to profile
-      profile['email'] = user.mail ? user.mail : user.userPrincipalName;
-    }
-  } catch (err) {
-    done(err, null);
-  }
+    :::code language="javascript" source="../demo/graph-tutorial/routes/auth.js" id="CallbackRouteSnippet" highlight="17-18":::
 
-  // Create a simple-oauth2 token from raw tokens
-  let oauthToken = oauth2.accessToken.create(params);
+1. Reinicie o servidor e vá pelo processo de entrada. Você deve terminar de volta na Home Page, mas a interface do usuário deve ser alterada para indicar que você está conectado.
 
-  // Save the profile and tokens in user storage
-  users[profile.oid] = { profile, oauthToken };
-  return done(null, users[profile.oid]);
-}
-```
+    ![Uma captura de tela da Home Page após entrar](./images/add-aad-auth-01.png)
 
-Atualize a `callback` rota em `./routes/auth.js` para remover o `req.flash` e o redirecionamento manual e `successRedirect` forneça o `passport.authenticate`parâmetro para. A `callback` rota deve ter a seguinte aparência.
+1. Clique no avatar do usuário no canto superior direito para **acessar o link sair.** Clicar **em sair** redefine a sessão e retorna à Home Page.
 
-```js
-router.post('/callback',
-  function(req, res, next) {
-    passport.authenticate('azuread-openidconnect',
-      {
-        response: res,
-        failureRedirect: '/',
-        failureFlash: true,
-        successRedirect: '/'
-      }
-    )(req,res,next);
-  }
-);
-```
-
-Reinicie o servidor e vá pelo processo de entrada. Você deve terminar de volta na Home Page, mas a interface do usuário deve ser alterada para indicar que você está conectado.
-
-![Uma captura de tela da Home Page após entrar](./images/add-aad-auth-01.png)
-
-Clique no avatar do usuário no canto superior direito para **acessar o link sair.** Clicar **em sair** redefine a sessão e retorna à Home Page.
-
-![Uma captura de tela do menu suspenso com o link sair](./images/add-aad-auth-02.png)
+    ![Uma captura de tela do menu suspenso com o link sair](./images/add-aad-auth-02.png)
 
 ## <a name="refreshing-tokens"></a>Atualizando tokens
 
@@ -330,31 +262,8 @@ Nesse ponto, seu aplicativo tem um token de acesso, que é enviado no `Authoriza
 
 No entanto, esse token é de vida curta. O token expira uma hora após sua emissão. É onde o token de atualização se torna útil. O token de atualização permite que o aplicativo solicite um novo token de acesso sem exigir que o usuário entre novamente.
 
-Para gerenciar isso, crie um novo arquivo na raiz do projeto chamado `tokens.js` para manter as funções de gerenciamento de token. Adicione o código a seguir.
+1. Crie um novo arquivo na raiz do projeto nomeado `tokens.js` para armazenar funções de gerenciamento de token. Adicione o código a seguir.
 
-```js
-module.exports = {
-  getAccessToken: async function(req) {
-    if (req.user) {
-      // Get the stored token
-      var storedToken = req.user.oauthToken;
-
-      if (storedToken) {
-        if (storedToken.expired()) {
-          // refresh token
-          var newToken = await storedToken.refresh();
-
-          // Update stored token
-          req.user.oauthToken = newToken;
-          return newToken.token.access_token;
-        }
-
-        // Token still valid, just return it
-        return storedToken.token.access_token;
-      }
-    }
-  }
-};
-```
+    :::code language="javascript" source="../demo/graph-tutorial/tokens.js" id="TokensSnippet":::
 
 Este método primeiro verifica se o token de acesso expirou ou está prestes a expirar. Se for, ele usará o token de atualização para obter novos tokens, atualizará o cache e retornará o novo token de acesso. Você usará esse método sempre que precisar obter o token de acesso fora de armazenamento.
