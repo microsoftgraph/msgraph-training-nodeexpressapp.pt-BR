@@ -1,29 +1,29 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
-Neste exercício, você estenderá o aplicativo do exercício anterior para oferecer suporte à autenticação com o Azure AD. Isso é necessário para obter o token de acesso OAuth necessário para chamar o Microsoft Graph. Nesta etapa, você integrará a biblioteca de [nós MSAL](https://github.com/AzureAD/microsoft-authentication-library-for-js/tree/dev/lib/msal-node) ao aplicativo.
+Neste exercício, você estenderá o aplicativo do exercício anterior para dar suporte à autenticação com o Azure AD. Isso é necessário para obter o token de acesso OAuth necessário para chamar o Microsoft Graph. Nesta etapa, você integrará a [biblioteca msal-node](https://github.com/AzureAD/microsoft-authentication-library-for-js/tree/dev/lib/msal-node) ao aplicativo.
 
-1. Crie um novo arquivo chamado **. env** na raiz do seu aplicativo e adicione o código a seguir.
+1. Crie um novo arquivo chamado **.env** na raiz do aplicativo e adicione o código a seguir.
 
     :::code language="ini" source="../demo/graph-tutorial/example.env":::
 
-    Substitua `YOUR_CLIENT_SECRET_HERE` pela ID do aplicativo do portal de registro do aplicativo e substitua `YOUR_APP_SECRET_HERE` pelo segredo do cliente gerado.
+    Substitua pela ID do aplicativo do Portal de Registro de Aplicativo e substitua pelo `YOUR_CLIENT_SECRET_HERE` `YOUR_APP_SECRET_HERE` segredo do cliente gerado.
 
     > [!IMPORTANT]
-    > Se você estiver usando o controle de origem como o Git, agora seria uma boa hora para excluir o arquivo **. env** do controle de origem para evitar vazar inadvertidamente sua ID de aplicativo e sua senha.
+    > Se você estiver usando o controle de código-fonte, como git, agora seria um bom momento para excluir o arquivo **.env** do controle de código-fonte para evitar o vazamento inadvertida da ID e da senha do aplicativo.
 
-1. Abra **./app.js** e adicione a seguinte linha à parte superior do arquivo para carregar o arquivo **. env** .
+1. Abra **./app.js** e adicione a seguinte linha na parte superior do arquivo para carregar o **arquivo .env.**
 
     ```javascript
     require('dotenv').config();
     ```
 
-## <a name="implement-sign-in"></a>Implementar logon
+## <a name="implement-sign-in"></a>Implementar a login
 
-1. Localize a linha `var indexRouter = require('./routes/index');` em **./app.js**. Insira o código a seguir **antes** dessa linha.
+1. Localize a `var app = express();` linha **em ./app.js**. Insira o código a **seguir após** essa linha.
 
     :::code language="javascript" source="../demo/graph-tutorial/app.js" id="MsalInitSnippet":::
 
-    Este código inicializa a biblioteca MSAL com a ID do aplicativo e a senha do aplicativo.
+    Esse código inicializa a biblioteca msal-node com a ID do aplicativo e a senha do aplicativo.
 
 1. Crie um novo arquivo no diretório **./routes** chamado **auth.js** e adicione o código a seguir.
 
@@ -112,31 +112,31 @@ Neste exercício, você estenderá o aplicativo do exercício anterior para ofer
     module.exports = router;
     ```
 
-    Isso define um roteador com três rotas: `signin` , `callback` e `signout` .
+    Isso define um roteador com três rotas: `signin` `callback` e `signout` .
 
-    A `signin` rota chama a `getAuthCodeUrl` função para gerar a URL de logon e redireciona o navegador para essa URL.
+    A `signin` rota chama a função para gerar a URL de `getAuthCodeUrl` logon e redireciona o navegador para essa URL.
 
-    A `callback` rota é onde o Azure é redirecionado após a conclusão da entrada. O código chama a `acquireTokenByCode` função para trocar o código de autorização para um token de acesso. Após o token ser obtido, ele redireciona de volta para a Home Page com o token de acesso no valor de erro temporário. Usaremos isso para verificar se a entrada está funcionando antes de prosseguir. Antes de testar, precisamos configurar o aplicativo expresso para usar o novo roteador de **./routes/auth.js**.
+    A `callback` rota é para onde o Azure redireciona após a conclusão da assinatura. O código chama a `acquireTokenByCode` função para trocar o código de autorização por um token de acesso. Depois que o token é obtido, ele redireciona de volta para a home page com o token de acesso no valor de erro temporário. Vamos usar isso para verificar se nossa assinatura está funcionando antes de continuar. Antes de testarmos, precisamos configurar o aplicativo Express para usar o novo roteador **de ./routes/auth.js**.
 
-    O `signout` método registra o usuário e destrói a sessão.
+    O `signout` método faz o usuário sair e destruir a sessão.
 
-1. Abra **./app.js** e insira o código a seguir **antes** da `var app = express();` linha.
+1. Abra **./app.js** e insira o código a **seguir antes** da `var app = express();` linha.
 
     ```javascript
     var authRouter = require('./routes/auth');
     ```
 
-1. Insira o código a seguir **após** a `app.use('/', indexRouter);` linha.
+1. Insira o código a **seguir após** a `app.use('/', indexRouter);` linha.
 
     ```javascript
     app.use('/auth', authRouter);
     ```
 
-Inicie o servidor e navegue até `https://localhost:3000` . Clique no botão entrar e você deverá ser redirecionado para o `https://login.microsoftonline.com` . Faça logon com sua conta da Microsoft e concorde com as permissões solicitadas. O navegador redireciona para o aplicativo, mostrando o token.
+Inicie o servidor e navegue até `https://localhost:3000` . Clique no botão de login e você deve ser redirecionado `https://login.microsoftonline.com` para. Entre com sua conta da Microsoft e consenta com as permissões solicitadas. O navegador redireciona para o aplicativo, mostrando o token.
 
 ### <a name="get-user-details"></a>Obter detalhes do usuário
 
-1. Crie um novo arquivo na raiz do projeto chamado **graph.js** e adicione o código a seguir.
+1. Crie um novo arquivo na raiz do projeto chamado **graph.js** adicione o código a seguir.
 
     ```javascript
     var graph = require('@microsoft/microsoft-graph-client');
@@ -168,9 +168,9 @@ Inicie o servidor e navegue até `https://localhost:3000` . Clique no botão ent
     }
     ```
 
-    Isso exporta a `getUserDetails` função, que usa o SDK do Microsoft Graph para chamar o `/me` ponto de extremidade e retornar o resultado.
+    Isso exporta a `getUserDetails` função, que usa o SDK do Microsoft Graph para chamar o ponto `/me` de extremidade e retornar o resultado.
 
-1. Abra **./routes/auth.js** e adicione as seguintes `require` instruções à parte superior do arquivo.
+1. Abra **./routes/auth.js** e adicione as instruções a `require` seguir na parte superior do arquivo.
 
     ```javascript
     var graph = require('../graph');
@@ -182,18 +182,18 @@ Inicie o servidor e navegue até `https://localhost:3000` . Clique no botão ent
 
     O novo código salva a ID da conta do usuário na sessão, obtém os detalhes do usuário do Microsoft Graph e o salva no armazenamento do usuário do aplicativo.
 
-1. Reinicie o servidor e vá pelo processo de entrada. Você deve terminar de volta na Home Page, mas a interface do usuário deve ser alterada para indicar que você está conectado.
+1. Reinicie o servidor e vá pelo processo de login. Você deve voltar à home page, mas a interface do usuário deve mudar para indicar que você está entrar.
 
-    ![Uma captura de tela da Home Page após entrar](./images/add-aad-auth-01.png)
+    ![Uma captura de tela da home page após entrar](./images/add-aad-auth-01.png)
 
-1. Clique no avatar do usuário no canto superior direito para **acessar o link sair.** Clicar **em sair** redefine a sessão e retorna à Home Page.
+1. Clique no avatar do usuário no canto superior direito para acessar o link **Sair.** Clicar em **Sair** redefine a sessão e o retorna para a home page.
 
-    ![Uma captura de tela do menu suspenso com o link sair](./images/add-aad-auth-02.png)
+    ![Uma captura de tela do menu suspenso com o link Sair](./images/add-aad-auth-02.png)
 
 ## <a name="storing-and-refreshing-tokens"></a>Armazenar e atualizar tokens
 
-Nesse ponto, seu aplicativo tem um token de acesso, que é enviado no `Authorization` cabeçalho das chamadas de API. Este é o token que permite que o aplicativo acesse o Microsoft Graph em nome do usuário.
+Neste ponto, seu aplicativo tem um token de acesso, que é enviado no `Authorization` header de chamadas de API. Esse é o token que permite ao aplicativo acessar o Microsoft Graph em nome do usuário.
 
-No entanto, esse token é de vida curta. O token expira uma hora após sua emissão. É onde o token de atualização se torna útil. A especificação OAuth introduz um token de atualização, que permite ao aplicativo solicitar um novo token de acesso sem exigir que o usuário entre novamente.
+No entanto, esse token tem curta duração. O token expira uma hora após sua emissão. É aqui que o token de atualização se torna útil. A especificação OAuth apresenta um token de atualização, que permite ao aplicativo solicitar um novo token de acesso sem exigir que o usuário entre novamente.
 
-Como o aplicativo está usando o pacote MSAL, você não precisa implementar qualquer lógica de armazenamento ou de atualização. O aplicativo usa o cache de token de MSAL no nó padrão, que é suficiente para um aplicativo de exemplo. Os aplicativos de produção devem fornecer seus próprios [plug-ins de cache](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-node/docs/configuration.md) para serializar o cache de token em uma mídia de armazenamento segura e confiável.
+Como o aplicativo está usando o pacote msal-node, você não precisa implementar qualquer armazenamento de token ou lógica de atualização. O aplicativo usa o cache de token msal-node na memória padrão, o que é suficiente para um aplicativo de exemplo. Os aplicativos de produção devem fornecer seu próprio [plug-in de](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-node/docs/configuration.md) cache para serializar o cache de token em um meio de armazenamento seguro e confiável.
